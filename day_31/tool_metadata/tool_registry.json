@@ -1,0 +1,63 @@
+{
+  "registry_version": "1.0.0",
+  "last_updated": "2024-01-15T10:00:00Z",
+  "tools": [
+    {
+      "name": "web_search",
+      "category": "search",
+      "tags": ["rate-limited", "external-api", "requires-auth", "web"],
+      "version": "1.0.0",
+      "status": "active",
+      "description": "Performs web searches using search engine API",
+      "definition_file": "../tool_definitions/web_search_tool.json",
+      "author": "System",
+      "created": "2024-01-15",
+      "dependencies": ["requests", "search-api-client"]
+    },
+    {
+      "name": "query_database",
+      "category": "database",
+      "tags": ["read-only", "requires-auth", "sql", "data-access"],
+      "version": "1.0.0",
+      "status": "active",
+      "description": "Executes read-only SQL SELECT queries against databases",
+      "definition_file": "../tool_definitions/database_query_tool.json",
+      "author": "System",
+      "created": "2024-01-15",
+      "dependencies": ["sqlalchemy", "psycopg2"]
+    },
+    {
+      "name": "send_email",
+      "category": "communication",
+      "tags": ["rate-limited", "requires-auth", "smtp", "notification"],
+      "version": "1.0.0",
+      "status": "active",
+      "description": "Sends email messages with validation and tracking",
+      "definition_file": "../tool_definitions/email_tool.json",
+      "author": "System",
+      "created": "2024-01-15",
+      "dependencies": ["smtplib", "email-validator"]
+    }
+  ],
+  "categories": {
+    "search": "Tools for searching and retrieving information from external sources",
+    "database": "Tools for querying and managing database operations",
+    "communication": "Tools for sending messages and notifications"
+  },
+  "tags": {
+    "read-only": "Tool only reads data, does not modify",
+    "rate-limited": "Tool has usage rate limits",
+    "requires-auth": "Tool requires authentication credentials",
+    "external-api": "Tool calls external APIs",
+    "sql": "Tool executes SQL queries",
+    "smtp": "Tool uses SMTP protocol",
+    "web": "Tool interacts with web services",
+    "data-access": "Tool accesses data sources",
+    "notification": "Tool sends notifications"
+  },
+  "statuses": {
+    "active": "Tool is production-ready and actively maintained",
+    "deprecated": "Tool is being phased out, use alternatives",
+    "experimental": "Tool is in testing phase, may have breaking changes"
+  }
+}

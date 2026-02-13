@@ -1,0 +1,62 @@
+{
+  "name": "web_search",
+  "description": "Performs a web search using a search engine API to retrieve relevant results based on the provided query. This tool is designed for finding current information, articles, documentation, and web resources. Results are ranked by relevance and limited by the num_results parameter. Use this tool when you need to find information that may not be in your training data or when current/real-time information is required. Note that results depend on search engine availability and may be subject to rate limiting.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The search query string to execute. Should be clear and specific for best results.",
+        "minLength": 1,
+        "maxLength": 500
+      },
+      "num_results": {
+        "type": "integer",
+        "description": "Maximum number of search results to return. Must be between 1 and 20.",
+        "minimum": 1,
+        "maximum": 20,
+        "default": 5
+      },
+      "language": {
+        "type": "string",
+        "description": "Language code for search results (e.g., 'en', 'es', 'fr')",
+        "pattern": "^[a-z]{2}$",
+        "default": "en"
+      }
+    },
+    "required": ["query"]
+  },
+  "returns": {
+    "type": "array",
+    "description": "Array of search result objects containing title, url, and snippet"
+  },
+  "usage_examples": [
+    {
+      "description": "Basic search with default settings",
+      "input": {
+        "query": "Python asyncio tutorial"
+      }
+    },
+    {
+      "description": "Search with custom result limit",
+      "input": {
+        "query": "machine learning best practices",
+        "num_results": 10
+      }
+    },
+    {
+      "description": "Search in specific language",
+      "input": {
+        "query": "recetas de paella",
+        "language": "es",
+        "num_results": 5
+      }
+    }
+  ],
+  "error_handling": {
+    "invalid_query": "Returns error if query is empty or exceeds 500 characters",
+    "rate_limit_exceeded": "Returns 429 status when API rate limit is reached. Retry after specified time.",
+    "network_error": "Returns error if search engine API is unreachable",
+    "no_results": "Returns empty array if no results found for the query"
+  }
+}

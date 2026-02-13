@@ -1,0 +1,106 @@
+{
+  "name": "send_email",
+  "description": "Sends an email message to one or more recipients using SMTP protocol with support for HTML and plain text formats. This tool validates email addresses, handles attachments, and provides delivery status tracking. All emails are sent through a configured mail server with authentication and TLS encryption for security. Use this tool for notifications, alerts, reports, or any automated email communication needs. The tool implements rate limiting to prevent abuse and ensures compliance with email sending best practices including proper headers and unsubscribe mechanisms.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "to": {
+        "type": "array",
+        "description": "Array of recipient email addresses. Each address must be valid RFC 5322 format.",
+        "items": {
+          "type": "string",
+          "format": "email"
+        },
+        "minItems": 1,
+        "maxItems": 50
+      },
+      "subject": {
+        "type": "string",
+        "description": "Email subject line. Should be clear and concise.",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "body": {
+        "type": "string",
+        "description": "Email message body content. Can be plain text or HTML.",
+        "minLength": 1,
+        "maxLength": 100000
+      },
+      "cc": {
+        "type": "array",
+        "description": "Array of CC (carbon copy) recipient email addresses",
+        "items": {
+          "type": "string",
+          "format": "email"
+        },
+        "maxItems": 20,
+        "default": []
+      },
+      "bcc": {
+        "type": "array",
+        "description": "Array of BCC (blind carbon copy) recipient email addresses",
+        "items": {
+          "type": "string",
+          "format": "email"
+        },
+        "maxItems": 20,
+        "default": []
+      },
+      "html": {
+        "type": "boolean",
+        "description": "If true, body is treated as HTML content. If false, plain text.",
+        "default": false
+      },
+      "priority": {
+        "type": "string",
+        "description": "Email priority level",
+        "enum": ["low", "normal", "high"],
+        "default": "normal"
+      }
+    },
+    "required": ["to", "subject", "body"]
+  },
+  "returns": {
+    "type": "object",
+    "description": "Object containing message_id, status, and delivery information"
+  },
+  "usage_examples": [
+    {
+      "description": "Simple plain text email",
+      "input": {
+        "to": ["user@example.com"],
+        "subject": "System Alert",
+        "body": "Your backup completed successfully."
+      }
+    },
+    {
+      "description": "HTML email with CC recipients",
+      "input": {
+        "to": ["team@example.com"],
+        "cc": ["manager@example.com"],
+        "subject": "Weekly Report",
+        "body": "<h1>Report</h1><p>All systems operational.</p>",
+        "html": true
+      }
+    },
+    {
+      "description": "High priority email to multiple recipients",
+      "input": {
+        "to": ["admin@example.com", "support@example.com"],
+        "subject": "Critical: Server Down",
+        "body": "Production server is not responding. Immediate action required.",
+        "priority": "high"
+      }
+    }
+  ],
+  "error_handling": {
+    "invalid_email_format": "Returns validation error if any email address does not match RFC 5322 format. Checks performed before sending.",
+    "rate_limit_exceeded": "Returns 429 error when hourly sending limit is reached (default: 100 emails/hour). Includes retry-after timestamp.",
+    "smtp_connection_failed": "Returns error if mail server is unreachable. Implements 3 retry attempts with exponential backoff.",
+    "authentication_failed": "Returns error if SMTP credentials are invalid or expired",
+    "recipient_rejected": "Returns error listing which recipient addresses were rejected by the mail server",
+    "message_too_large": "Returns error if email size exceeds server limits (typically 25MB including attachments)",
+    "spam_detected": "Returns warning if content triggers spam filters. Includes suggestions for improvement.",
+    "bounce_handling": "Tracks bounced emails and temporarily blocks sending to repeatedly bouncing addresses"
+  }
+}

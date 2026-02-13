@@ -1,0 +1,85 @@
+{
+  "name": "query_database",
+  "description": "Executes read-only SQL SELECT queries against a specified database and returns the results in a structured format. This tool only supports SELECT operations to ensure data safety and prevent unintended modifications. All queries are executed with prepared statements and parameter binding to prevent SQL injection attacks. Use this tool when you need to retrieve or analyze data stored in relational databases without making any changes. The tool automatically handles connection pooling and query optimization. Query execution is limited to a 30-second timeout to prevent long-running operations from blocking resources.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The SQL SELECT query to execute. Only SELECT statements are allowed. Use parameterized placeholders (?) for dynamic values to prevent SQL injection.",
+        "minLength": 1,
+        "maxLength": 10000
+      },
+      "database": {
+        "type": "string",
+        "description": "The name or identifier of the target database to query against",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "parameters": {
+        "type": "array",
+        "description": "Array of parameter values to bind to query placeholders in order. Required when query contains placeholders.",
+        "items": {
+          "type": ["string", "number", "boolean", "null"]
+        },
+        "default": []
+      },
+      "timeout": {
+        "type": "integer",
+        "description": "Query execution timeout in seconds. Must be between 1 and 30.",
+        "minimum": 1,
+        "maximum": 30,
+        "default": 30
+      },
+      "max_rows": {
+        "type": "integer",
+        "description": "Maximum number of rows to return. Prevents memory issues with large result sets.",
+        "minimum": 1,
+        "maximum": 10000,
+        "default": 1000
+      }
+    },
+    "required": ["query", "database"]
+  },
+  "returns": {
+    "type": "object",
+    "description": "Object containing rows array, rowCount, and execution metadata"
+  },
+  "usage_examples": [
+    {
+      "description": "Simple SELECT query",
+      "input": {
+        "query": "SELECT * FROM users WHERE active = ?",
+        "database": "production",
+        "parameters": [true]
+      }
+    },
+    {
+      "description": "Query with timeout and row limit",
+      "input": {
+        "query": "SELECT COUNT(*) FROM orders WHERE date > ?",
+        "database": "analytics",
+        "parameters": ["2024-01-01"],
+        "timeout": 10
+      }
+    },
+    {
+      "description": "Complex JOIN query with max rows",
+      "input": {
+        "query": "SELECT u.name, o.total FROM users u JOIN orders o ON u.id = o.user_id WHERE o.status = ?",
+        "database": "production",
+        "parameters": ["completed"],
+        "max_rows": 500
+      }
+    }
+  ],
+  "error_handling": {
+    "sql_injection_prevention": "All queries use parameterized statements. Never concatenate user input directly into SQL strings. Use the parameters array for dynamic values.",
+    "non_select_query": "Returns error if query contains INSERT, UPDATE, DELETE, DROP, or other non-SELECT operations. Only SELECT statements are permitted.",
+    "invalid_query": "Returns syntax error if SQL query is malformed",
+    "database_not_found": "Returns error if specified database does not exist or is not accessible",
+    "timeout_exceeded": "Query is terminated and error returned if execution exceeds timeout limit",
+    "permission_denied": "Returns error if user lacks permissions for the requested operation",
+    "connection_failed": "Returns error if database connection cannot be established. Includes retry logic with exponential backoff."
+  }
+}
