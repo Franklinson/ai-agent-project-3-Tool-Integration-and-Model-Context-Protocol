@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "web_search_input.json",
+  "title": "Web Search Input Schema",
+  "description": "Schema for web search tool input parameters",
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string",
+      "description": "Search query string",
+      "minLength": 1,
+      "maxLength": 500,
+      "pattern": "^\\S.*\\S$"
+    },
+    "num_results": {
+      "type": "integer",
+      "description": "Number of search results to return",
+      "minimum": 1,
+      "maximum": 20,
+      "default": 5
+    },
+    "sort_by": {
+      "type": "string",
+      "description": "Sort order for search results",
+      "enum": ["relevance", "date"],
+      "default": "relevance"
+    }
+  },
+  "required": ["query"],
+  "additionalProperties": false
+}

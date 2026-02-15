@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "email_output.json",
+  "title": "Email Output Schema",
+  "description": "Schema for email sending tool response",
+  "type": "object",
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "description": "Unique message identifier",
+      "pattern": "^[a-zA-Z0-9-_]+$"
+    },
+    "status": {
+      "type": "string",
+      "description": "Email delivery status",
+      "enum": ["sent", "failed"]
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when email was sent (ISO 8601 format)"
+    }
+  },
+  "required": ["message_id", "status", "sent_at"],
+  "additionalProperties": false
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "error_response.json",
+  "title": "Standard Error Response Schema",
+  "description": "Standard error response format for all tools",
+  "type": "object",
+  "properties": {
+    "error": {
+      "type": "object",
+      "description": "Error information",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Error code identifier",
+          "pattern": "^[A-Z_]+$"
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error message",
+          "minLength": 1
+        },
+        "details": {
+          "type": "object",
+          "description": "Additional error context and details",
+          "additionalProperties": true
+        }
+      },
+      "required": ["code", "message"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["error"],
+  "additionalProperties": false
+}

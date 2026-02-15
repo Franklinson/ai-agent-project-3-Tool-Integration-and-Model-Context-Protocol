@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "database_query_output.json",
+  "title": "Database Query Output Schema",
+  "description": "Schema for database query tool response",
+  "type": "object",
+  "properties": {
+    "rows": {
+      "type": "array",
+      "description": "Query result rows",
+      "items": {
+        "type": "object",
+        "description": "Database row as key-value pairs",
+        "additionalProperties": true
+      }
+    },
+    "row_count": {
+      "type": "integer",
+      "description": "Number of rows returned",
+      "minimum": 0
+    },
+    "execution_time_ms": {
+      "type": "number",
+      "description": "Query execution time in milliseconds",
+      "minimum": 0
+    }
+  },
+  "required": ["rows", "row_count", "execution_time_ms"],
+  "additionalProperties": false
+}

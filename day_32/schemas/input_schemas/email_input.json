@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "email_input.json",
+  "title": "Email Input Schema",
+  "description": "Schema for email sending tool input parameters",
+  "type": "object",
+  "properties": {
+    "to": {
+      "type": "string",
+      "description": "Primary recipient email address",
+      "format": "email",
+      "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Email subject line",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "body": {
+      "type": "string",
+      "description": "Email message body",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "cc": {
+      "type": "array",
+      "description": "Carbon copy recipients",
+      "items": {
+        "type": "string",
+        "format": "email",
+        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+      },
+      "uniqueItems": true,
+      "maxItems": 10
+    }
+  },
+  "required": ["to", "subject", "body"],
+  "additionalProperties": false
+}

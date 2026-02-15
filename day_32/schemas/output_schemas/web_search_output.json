@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "web_search_output.json",
+  "title": "Web Search Output Schema",
+  "description": "Schema for web search tool response",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "Array of search results",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Page title"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Page URL"
+          },
+          "snippet": {
+            "type": "string",
+            "description": "Page content snippet"
+          }
+        },
+        "required": ["title", "url", "snippet"],
+        "additionalProperties": false
+      }
+    },
+    "query": {
+      "type": "string",
+      "description": "Original search query"
+    },
+    "total_results": {
+      "type": "integer",
+      "description": "Total number of results found",
+      "minimum": 0
+    }
+  },
+  "required": ["results", "query", "total_results"],
+  "additionalProperties": false
+}

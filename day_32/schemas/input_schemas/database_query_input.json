@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "database_query_input.json",
+  "title": "Database Query Input Schema",
+  "description": "Schema for database query tool input parameters",
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string",
+      "description": "SQL query to execute",
+      "minLength": 1,
+      "pattern": "^\\s*(SELECT|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER)\\b",
+      "patternFlags": "i"
+    },
+    "database": {
+      "type": "string",
+      "description": "Target database name",
+      "enum": ["users_db", "products_db", "analytics_db", "logs_db", "inventory_db"]
+    },
+    "timeout": {
+      "type": "integer",
+      "description": "Query timeout in seconds",
+      "minimum": 1,
+      "maximum": 300,
+      "default": 30
+    }
+  },
+  "required": ["query", "database"],
+  "additionalProperties": false
+}
