@@ -1,0 +1,195 @@
+{
+  "tool_name": "send_email",
+  "examples": {
+    "common_use_cases": [
+      {
+        "name": "Simple notification",
+        "description": "Plain text notification to single recipient",
+        "input": {
+          "to": ["user@example.com"],
+          "subject": "Backup Completed",
+          "body": "Your backup completed successfully."
+        },
+        "output": {
+          "message_id": "msg_abc123",
+          "status": "sent",
+          "recipients": {"accepted": ["user@example.com"], "rejected": []},
+          "timestamp": "2024-01-15T03:05:22Z"
+        }
+      },
+      {
+        "name": "HTML email",
+        "description": "Formatted HTML email",
+        "input": {
+          "to": ["team@example.com"],
+          "subject": "Weekly Report",
+          "body": "<h1>Report</h1><p>All systems operational.</p>",
+          "html": true
+        },
+        "output": {
+          "message_id": "msg_def456",
+          "status": "sent",
+          "recipients": {"accepted": ["team@example.com"], "rejected": []},
+          "timestamp": "2024-01-15T10:30:15Z"
+        }
+      },
+      {
+        "name": "Email with CC",
+        "description": "Email with carbon copy recipients",
+        "input": {
+          "to": ["dev@example.com"],
+          "cc": ["manager@example.com"],
+          "subject": "Code Review",
+          "body": "Please review PR #123."
+        },
+        "output": {
+          "message_id": "msg_ghi789",
+          "status": "sent",
+          "recipients": {"accepted": ["dev@example.com", "manager@example.com"], "rejected": []},
+          "timestamp": "2024-01-15T14:20:45Z"
+        }
+      },
+      {
+        "name": "High priority alert",
+        "description": "Urgent notification",
+        "input": {
+          "to": ["admin@example.com"],
+          "subject": "URGENT: Server Alert",
+          "body": "CPU usage critical.",
+          "priority": "high"
+        },
+        "output": {
+          "message_id": "msg_jkl012",
+          "status": "sent",
+          "priority": "high",
+          "timestamp": "2024-01-15T18:22:10Z"
+        }
+      }
+    ],
+    "advanced_use_cases": [
+      {
+        "name": "Complex HTML with BCC",
+        "description": "Formatted report with hidden recipients",
+        "input": {
+          "to": ["client@example.com"],
+          "cc": ["manager@example.com"],
+          "bcc": ["tracking@example.com"],
+          "subject": "Q4 Report",
+          "body": "<h2>Summary</h2><table><tr><td>Revenue</td><td>$1.2M</td></tr></table>",
+          "html": true
+        },
+        "output": {
+          "message_id": "msg_mno345",
+          "status": "sent",
+          "timestamp": "2024-01-15T09:15:33Z"
+        }
+      },
+      {
+        "name": "Bulk notification",
+        "description": "Newsletter to multiple subscribers",
+        "input": {
+          "to": ["sub1@example.com", "sub2@example.com", "sub3@example.com"],
+          "subject": "Monthly Newsletter",
+          "body": "<h1>Updates</h1><p>New features...</p>",
+          "html": true,
+          "priority": "low"
+        },
+        "output": {
+          "message_id": "msg_pqr678",
+          "status": "sent",
+          "timestamp": "2024-01-15T08:00:00Z"
+        }
+      }
+    ],
+    "edge_cases": [
+      {
+        "name": "Maximum recipients",
+        "description": "Email to 50 recipients (max limit)",
+        "input": {
+          "to": ["u1@example.com", "u2@example.com"],
+          "subject": "Announcement",
+          "body": "Important update."
+        },
+        "output": {
+          "message_id": "msg_stu901",
+          "status": "sent",
+          "warning": "Maximum recipient limit",
+          "timestamp": "2024-01-15T11:30:00Z"
+        }
+      },
+      {
+        "name": "Long subject",
+        "description": "Subject at 200 character limit",
+        "input": {
+          "to": ["user@example.com"],
+          "subject": "Very long subject line that approaches maximum allowed length of 200 characters to test edge case handling",
+          "body": "Content."
+        },
+        "output": {
+          "message_id": "msg_vwx234",
+          "status": "sent",
+          "timestamp": "2024-01-15T12:45:00Z"
+        }
+      }
+    ],
+    "error_cases": [
+      {
+        "name": "Invalid email",
+        "description": "Invalid email address format",
+        "input": {
+          "to": ["invalid-email"],
+          "subject": "Test",
+          "body": "Test"
+        },
+        "output": {
+          "error": "ValidationError",
+          "message": "Invalid email address format",
+          "code": "INVALID_EMAIL_FORMAT"
+        }
+      },
+      {
+        "name": "Empty subject",
+        "description": "Missing required subject",
+        "input": {
+          "to": ["user@example.com"],
+          "subject": "",
+          "body": "Body"
+        },
+        "output": {
+          "error": "ValidationError",
+          "message": "Subject must be at least 1 character",
+          "code": "INVALID_SUBJECT"
+        }
+      },
+      {
+        "name": "Rate limit",
+        "description": "Too many emails sent",
+        "input": {
+          "to": ["user@example.com"],
+          "subject": "Test",
+          "body": "Test"
+        },
+        "output": {
+          "error": "RateLimitError",
+          "message": "Hourly limit of 100 emails exceeded",
+          "code": "RATE_LIMIT_EXCEEDED",
+          "retry_after": "2024-01-15T14:00:00Z"
+        }
+      },
+      {
+        "name": "Connection failed",
+        "description": "SMTP server unreachable",
+        "input": {
+          "to": ["user@example.com"],
+          "subject": "Test",
+          "body": "Test"
+        },
+        "output": {
+          "error": "ConnectionError",
+          "message": "Failed to connect after 3 attempts",
+          "code": "SMTP_CONNECTION_FAILED"
+        }
+      }
+    ]
+  }
+}

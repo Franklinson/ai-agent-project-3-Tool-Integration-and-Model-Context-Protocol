@@ -1,0 +1,242 @@
+{
+  "tool_name": "web_search",
+  "examples": {
+    "common_use_cases": [
+      {
+        "name": "Basic search",
+        "description": "Simple search with default settings",
+        "input": {
+          "query": "Python asyncio tutorial"
+        },
+        "output": {
+          "results": [
+            {
+              "title": "Asyncio — Asynchronous I/O — Python 3.12 Documentation",
+              "url": "https://docs.python.org/3/library/asyncio.html",
+              "snippet": "asyncio is a library to write concurrent code using the async/await syntax..."
+            },
+            {
+              "title": "Getting Started with Asyncio in Python",
+              "url": "https://realpython.com/async-io-python/",
+              "snippet": "Learn how to use Python's asyncio library for asynchronous programming..."
+            }
+          ],
+          "count": 5,
+          "query": "Python asyncio tutorial",
+          "timestamp": "2024-01-15T10:30:00Z"
+        }
+      },
+      {
+        "name": "Search with custom result limit",
+        "description": "Request more results than default",
+        "input": {
+          "query": "machine learning best practices",
+          "num_results": 10
+        },
+        "output": {
+          "results": [
+            {
+              "title": "Machine Learning Best Practices Guide",
+              "url": "https://example.com/ml-best-practices",
+              "snippet": "Comprehensive guide to ML best practices including data preparation..."
+            }
+          ],
+          "count": 10,
+          "query": "machine learning best practices",
+          "timestamp": "2024-01-15T11:00:00Z"
+        }
+      },
+      {
+        "name": "Technical documentation search",
+        "description": "Search for specific API documentation",
+        "input": {
+          "query": "AWS Lambda Python SDK documentation",
+          "num_results": 5
+        },
+        "output": {
+          "results": [
+            {
+              "title": "AWS Lambda - Python SDK Documentation",
+              "url": "https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/lambda.html",
+              "snippet": "Complete reference for AWS Lambda using Python boto3 SDK..."
+            }
+          ],
+          "count": 5,
+          "query": "AWS Lambda Python SDK documentation",
+          "timestamp": "2024-01-15T12:15:00Z"
+        }
+      }
+    ],
+    "advanced_use_cases": [
+      {
+        "name": "Non-English search",
+        "description": "Search in Spanish language",
+        "input": {
+          "query": "recetas de paella valenciana",
+          "language": "es",
+          "num_results": 8
+        },
+        "output": {
+          "results": [
+            {
+              "title": "Receta de Paella Valenciana Auténtica",
+              "url": "https://example.es/paella-valenciana",
+              "snippet": "La auténtica receta de paella valenciana con ingredientes tradicionales..."
+            }
+          ],
+          "count": 8,
+          "query": "recetas de paella valenciana",
+          "language": "es",
+          "timestamp": "2024-01-15T13:30:00Z"
+        }
+      },
+      {
+        "name": "Complex technical query",
+        "description": "Search for specific error resolution",
+        "input": {
+          "query": "kubernetes pod crashloopbackoff troubleshooting steps",
+          "num_results": 15
+        },
+        "output": {
+          "results": [
+            {
+              "title": "How to Debug CrashLoopBackOff in Kubernetes",
+              "url": "https://example.com/k8s-crashloop",
+              "snippet": "Step-by-step guide to troubleshoot and fix CrashLoopBackOff errors..."
+            }
+          ],
+          "count": 15,
+          "query": "kubernetes pod crashloopbackoff troubleshooting steps",
+          "timestamp": "2024-01-15T14:45:00Z"
+        }
+      }
+    ],
+    "edge_cases": [
+      {
+        "name": "Single result request",
+        "description": "Request minimum number of results",
+        "input": {
+          "query": "Python official website",
+          "num_results": 1
+        },
+        "output": {
+          "results": [
+            {
+              "title": "Welcome to Python.org",
+              "url": "https://www.python.org/",
+              "snippet": "The official home of the Python Programming Language..."
+            }
+          ],
+          "count": 1,
+          "query": "Python official website",
+          "timestamp": "2024-01-15T15:00:00Z"
+        }
+      },
+      {
+        "name": "Maximum results",
+        "description": "Request maximum allowed results",
+        "input": {
+          "query": "cloud computing services comparison",
+          "num_results": 20
+        },
+        "output": {
+          "results": [
+            {
+              "title": "Cloud Services Comparison 2024",
+              "url": "https://example.com/cloud-comparison",
+              "snippet": "Detailed comparison of AWS, Azure, and Google Cloud..."
+            }
+          ],
+          "count": 20,
+          "query": "cloud computing services comparison",
+          "timestamp": "2024-01-15T16:00:00Z"
+        }
+      },
+      {
+        "name": "No results found",
+        "description": "Query that returns no results",
+        "input": {
+          "query": "xyzabc123nonexistentquery999"
+        },
+        "output": {
+          "results": [],
+          "count": 0,
+          "query": "xyzabc123nonexistentquery999",
+          "timestamp": "2024-01-15T17:00:00Z"
+        }
+      }
+    ],
+    "error_cases": [
+      {
+        "name": "Empty query",
+        "description": "Attempting search with empty string",
+        "input": {
+          "query": ""
+        },
+        "output": {
+          "error": "ValidationError",
+          "message": "Query must be at least 1 character long",
+          "code": "INVALID_QUERY",
+          "field": "query"
+        }
+      },
+      {
+        "name": "Query too long",
+        "description": "Query exceeds maximum length",
+        "input": {
+          "query": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "output": {
+          "error": "ValidationError",
+          "message": "Query exceeds maximum length of 500 characters",
+          "code": "QUERY_TOO_LONG",
+          "field": "query",
+          "max_length": 500
+        }
+      },
+      {
+        "name": "Invalid result count",
+        "description": "Requesting more than maximum allowed results",
+        "input": {
+          "query": "test query",
+          "num_results": 25
+        },
+        "output": {
+          "error": "ValidationError",
+          "message": "num_results must be between 1 and 20",
+          "code": "INVALID_NUM_RESULTS",
+          "field": "num_results",
+          "min": 1,
+          "max": 20
+        }
+      },
+      {
+        "name": "Invalid language code",
+        "description": "Using invalid language format",
+        "input": {
+          "query": "test query",
+          "language": "english"
+        },
+        "output": {
+          "error": "ValidationError",
+          "message": "Language code must be 2 lowercase letters (e.g., 'en', 'es', 'fr')",
+          "code": "INVALID_LANGUAGE_CODE",
+          "field": "language"
+        }
+      },
+      {
+        "name": "Rate limit exceeded",
+        "description": "Too many requests in short period",
+        "input": {
+          "query": "test query"
+        },
+        "output": {
+          "error": "RateLimitError",
+          "message": "API rate limit exceeded. Please retry after specified time.",
+          "code": "RATE_LIMIT_EXCEEDED",
+          "retry_after": "2024-01-15T18:00:00Z"
+        }
+      }
+    ]
+  }
+}

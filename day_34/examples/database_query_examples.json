@@ -1,0 +1,202 @@
+{
+  "tool_name": "query_database",
+  "examples": {
+    "common_use_cases": [
+      {
+        "name": "Simple SELECT",
+        "description": "Retrieve active users",
+        "input": {
+          "query": "SELECT * FROM users WHERE active = ?",
+          "database": "production",
+          "parameters": [true]
+        },
+        "output": {
+          "rows": [
+            {"id": 1, "name": "Alice", "email": "alice@example.com", "active": true},
+            {"id": 2, "name": "Bob", "email": "bob@example.com", "active": true}
+          ],
+          "rowCount": 2,
+          "executionTime": 45
+        }
+      },
+      {
+        "name": "Count query",
+        "description": "Count orders after date",
+        "input": {
+          "query": "SELECT COUNT(*) as total FROM orders WHERE created_at > ?",
+          "database": "analytics",
+          "parameters": ["2024-01-01"]
+        },
+        "output": {
+          "rows": [{"total": 1523}],
+          "rowCount": 1,
+          "executionTime": 120
+        }
+      },
+      {
+        "name": "JOIN query",
+        "description": "User orders with JOIN",
+        "input": {
+          "query": "SELECT u.name, o.total FROM users u JOIN orders o ON u.id = o.user_id WHERE o.status = ?",
+          "database": "production",
+          "parameters": ["completed"],
+          "max_rows": 500
+        },
+        "output": {
+          "rows": [
+            {"name": "Alice", "total": 299.99},
+            {"name": "Bob", "total": 149.50}
+          ],
+          "rowCount": 2,
+          "executionTime": 230
+        }
+      },
+      {
+        "name": "Aggregation",
+        "description": "Average by group",
+        "input": {
+          "query": "SELECT status, AVG(total) as avg FROM orders GROUP BY status",
+          "database": "analytics",
+          "parameters": []
+        },
+        "output": {
+          "rows": [
+            {"status": "completed", "avg": 224.75},
+            {"status": "pending", "avg": 189.30}
+          ],
+          "rowCount": 2,
+          "executionTime": 180
+        }
+      }
+    ],
+    "advanced_use_cases": [
+      {
+        "name": "Complex JOIN with subquery",
+        "description": "Top customers analysis",
+        "input": {
+          "query": "SELECT u.id, u.name, COUNT(o.id) as orders, SUM(o.total) as spent FROM users u JOIN orders o ON u.id = o.user_id WHERE o.created_at > ? GROUP BY u.id HAVING SUM(o.total) > ? ORDER BY spent DESC",
+          "database": "analytics",
+          "parameters": ["2024-01-01", 1000],
+          "max_rows": 50,
+          "timeout": 20
+        },
+        "output": {
+          "rows": [
+            {"id": 5, "name": "Charlie", "orders": 15, "spent": 4523.50}
+          ],
+          "rowCount": 1,
+          "executionTime": 1850
+        }
+      },
+      {
+        "name": "Multi-table JOIN",
+        "description": "Detailed order information",
+        "input": {
+          "query": "SELECT o.id, u.name, p.name as product FROM orders o JOIN users u ON o.user_id = u.id JOIN order_items oi ON o.id = oi.order_id JOIN products p ON oi.product_id = p.id WHERE o.status = ?",
+          "database": "production",
+          "parameters": ["completed"],
+          "max_rows": 1000,
+          "timeout": 25
+        },
+        "output": {
+          "rows": [
+            {"id": 1001, "name": "Alice", "product": "Laptop"}
+          ],
+          "rowCount": 1,
+          "executionTime": 2340
+        }
+      }
+    ],
+    "edge_cases": [
+      {
+        "name": "Empty result",
+        "description": "Query returns no rows",
+        "input": {
+          "query": "SELECT * FROM users WHERE email = ?",
+          "database": "production",
+          "parameters": ["nonexistent@example.com"]
+        },
+        "output": {
+          "rows": [],
+          "rowCount": 0,
+          "executionTime": 25
+        }
+      },
+      {
+        "name": "Max rows limit",
+        "description": "Result set truncated",
+        "input": {
+          "query": "SELECT * FROM logs WHERE created_at > ?",
+          "database": "logging",
+          "parameters": ["2024-01-01"],
+          "max_rows": 10
+        },
+        "output": {
+          "rows": [{"id": 1, "message": "Log 1"}],
+          "rowCount": 10,
+          "executionTime": 150,
+          "warning": "Result truncated to 10 rows"
+        }
+      }
+    ],
+    "error_cases": [
+      {
+        "name": "Non-SELECT query",
+        "description": "UPDATE not allowed",
+        "input": {
+          "query": "UPDATE users SET active = ? WHERE id = ?",
+          "database": "production",
+          "parameters": [false, 1]
+        },
+        "output": {
+          "error": "InvalidQueryError",
+          "message": "Only SELECT queries allowed",
+          "code": "QUERY_TYPE_NOT_ALLOWED"
+        }
+      },
+      {
+        "name": "Invalid database",
+        "description": "Database not found",
+        "input": {
+          "query": "SELECT * FROM users",
+          "database": "nonexistent",
+          "parameters": []
+        },
+        "output": {
+          "error": "DatabaseNotFoundError",
+          "message": "Database 'nonexistent' not found",
+          "code": "DATABASE_NOT_FOUND"
+        }
+      },
+      {
+        "name": "Query timeout",
+        "description": "Execution exceeds limit",
+        "input": {
+          "query": "SELECT * FROM large_table JOIN another_large_table",
+          "database": "analytics",
+          "parameters": [],
+          "timeout": 5
+        },
+        "output": {
+          "error": "TimeoutError",
+          "message": "Query exceeded 5 second timeout",
+          "code": "QUERY_TIMEOUT"
+        }
+      },
+      {
+        "name": "Parameter mismatch",
+        "description": "Missing parameters",
+        "input": {
+          "query": "SELECT * FROM users WHERE id = ?",
+          "database": "production",
+          "parameters": []
+        },
+        "output": {
+          "error": "ValidationError",
+          "message": "Query has 1 placeholder but 0 parameters",
+          "code": "PARAMETER_MISMATCH"
+        }
+      }
+    ]
+  }
+}
