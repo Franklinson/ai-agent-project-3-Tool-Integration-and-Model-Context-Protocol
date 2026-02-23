@@ -3,7 +3,7 @@ Complete Code Execution Tool - Usage Examples
 Demonstrates all features: validation, sandboxing, resource limits, monitoring
 """
 
-from code_execution_tool import CodeExecutionTool
+from day_36.code_execution_tool import CodeExecutionTool
 
 
 def example_basic_execution():

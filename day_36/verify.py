@@ -58,7 +58,7 @@ def main():
     
     try:
         # Test import
-        from code_execution_tool import CodeExecutionTool
+        from day_36.code_execution_tool import CodeExecutionTool
         print("✅ CodeExecutionTool imports successfully")
         
         # Test basic execution

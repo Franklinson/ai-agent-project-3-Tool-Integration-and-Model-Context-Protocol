@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from code_execution_tool import CodeExecutionTool
+from day_36.code_execution_tool import CodeExecutionTool
 
 
 class TestCodeExecution:
