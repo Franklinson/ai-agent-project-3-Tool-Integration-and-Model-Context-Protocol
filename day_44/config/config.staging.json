@@ -1,0 +1,66 @@
+{
+  "server": {
+    "name": "staging-mcp-server",
+    "version": "1.0.0",
+    "host": "0.0.0.0",
+    "port": 8080,
+    "environment": "staging"
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": "logs/staging.log",
+    "console": true,
+    "json_format": true
+  },
+  "tools": {
+    "enabled": ["calculator", "web_search", "database_query", "file_system", "api_tool"],
+    "timeout": 45,
+    "max_concurrent": 10,
+    "retry_attempts": 2
+  },
+  "security": {
+    "sandbox_enabled": true,
+    "validate_inputs": true,
+    "allowed_hosts": ["*"],
+    "max_request_size": 2097152,
+    "rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 60
+    }
+  },
+  "resources": {
+    "max_memory_mb": 768,
+    "max_cpu_percent": 70,
+    "max_execution_time": 90
+  },
+  "database": {
+    "type": "postgresql",
+    "host": "${DB_HOST}",
+    "port": 5432,
+    "database": "${DB_NAME}",
+    "username": "${DB_USER}",
+    "password": "${DB_PASSWORD}",
+    "pool_size": 10
+  },
+  "cache": {
+    "enabled": true,
+    "type": "redis",
+    "host": "${REDIS_HOST}",
+    "port": 6379,
+    "password": "${REDIS_PASSWORD}",
+    "ttl": 3600,
+    "max_size": 500
+  },
+  "monitoring": {
+    "enabled": true,
+    "metrics_port": 9090,
+    "health_check_path": "/health"
+  },
+  "features": {
+    "auto_register_tools": true,
+    "enable_metrics": true,
+    "enable_health_check": true,
+    "enable_tracing": true
+  }
+}

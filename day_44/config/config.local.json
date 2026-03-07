@@ -1,0 +1,53 @@
+{
+  "server": {
+    "name": "local-mcp-server",
+    "version": "1.0.0",
+    "host": "localhost",
+    "port": 8080,
+    "environment": "local"
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": "logs/mcp_server.log",
+    "console": true
+  },
+  "tools": {
+    "enabled": [
+      "calculator",
+      "web_search",
+      "database_query",
+      "file_system",
+      "code_execution"
+    ],
+    "timeout": 30,
+    "max_concurrent": 5
+  },
+  "security": {
+    "sandbox_enabled": true,
+    "validate_inputs": true,
+    "allowed_hosts": ["localhost", "127.0.0.1"],
+    "max_request_size": 1048576
+  },
+  "resources": {
+    "max_memory_mb": 512,
+    "max_cpu_percent": 50,
+    "max_execution_time": 60
+  },
+  "database": {
+    "type": "sqlite",
+    "path": "data/local.db",
+    "pool_size": 5,
+    "timeout": 10
+  },
+  "cache": {
+    "enabled": true,
+    "ttl": 3600,
+    "max_size": 100
+  },
+  "features": {
+    "auto_register_tools": false,
+    "enable_metrics": true,
+    "enable_health_check": true
+  }
+}

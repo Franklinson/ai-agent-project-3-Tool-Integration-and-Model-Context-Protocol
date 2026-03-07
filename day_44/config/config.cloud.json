@@ -1,0 +1,141 @@
+{
+  "server": {
+    "name": "cloud-mcp-server",
+    "version": "1.0.0",
+    "host": "0.0.0.0",
+    "port": 8080,
+    "environment": "production"
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(funcName)s:%(lineno)d",
+    "file": "/app/logs/mcp_server.log",
+    "console": true,
+    "json_format": true,
+    "rotation": {
+      "max_bytes": 10485760,
+      "backup_count": 5
+    }
+  },
+  "tools": {
+    "enabled": [
+      "calculator",
+      "web_search",
+      "database_query",
+      "file_system",
+      "api_tool"
+    ],
+    "timeout": 60,
+    "max_concurrent": 20,
+    "retry_attempts": 3,
+    "retry_delay": 1
+  },
+  "security": {
+    "sandbox_enabled": true,
+    "validate_inputs": true,
+    "allowed_hosts": ["*"],
+    "max_request_size": 5242880,
+    "rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 100,
+      "burst": 20
+    },
+    "cors": {
+      "enabled": true,
+      "allowed_origins": ["*"],
+      "allowed_methods": ["GET", "POST"],
+      "allowed_headers": ["Content-Type", "Authorization"]
+    }
+  },
+  "resources": {
+    "max_memory_mb": 1024,
+    "max_cpu_percent": 80,
+    "max_execution_time": 120,
+    "worker_threads": 4
+  },
+  "database": {
+    "type": "postgresql",
+    "host": "${DB_HOST}",
+    "port": 5432,
+    "database": "${DB_NAME}",
+    "username": "${DB_USER}",
+    "password": "${DB_PASSWORD}",
+    "pool_size": 20,
+    "max_overflow": 10,
+    "timeout": 30,
+    "ssl_mode": "require"
+  },
+  "cache": {
+    "enabled": true,
+    "type": "redis",
+    "host": "${REDIS_HOST}",
+    "port": 6379,
+    "password": "${REDIS_PASSWORD}",
+    "ttl": 3600,
+    "max_size": 1000,
+    "db": 0
+  },
+  "monitoring": {
+    "enabled": true,
+    "metrics_port": 9090,
+    "health_check_path": "/health",
+    "readiness_check_path": "/ready",
+    "prometheus_enabled": true,
+    "cloudwatch_enabled": false,
+    "datadog_enabled": false
+  },
+  "scaling": {
+    "auto_scale": true,
+    "min_instances": 2,
+    "max_instances": 10,
+    "target_cpu_utilization": 70,
+    "target_memory_utilization": 80,
+    "scale_up_cooldown": 60,
+    "scale_down_cooldown": 300
+  },
+  "features": {
+    "auto_register_tools": true,
+    "enable_metrics": true,
+    "enable_health_check": true,
+    "enable_tracing": true,
+    "enable_profiling": false,
+    "graceful_shutdown": true,
+    "shutdown_timeout": 30
+  },
+  "cloud": {
+    "provider": "aws",
+    "region": "us-east-1",
+    "availability_zones": ["us-east-1a", "us-east-1b"],
+    "load_balancer": {
+      "enabled": true,
+      "type": "application",
+      "health_check_interval": 30,
+      "health_check_timeout": 5,
+      "healthy_threshold": 2,
+      "unhealthy_threshold": 3
+    },
+    "secrets_manager": {
+      "enabled": true,
+      "prefix": "mcp-server/"
+    }
+  },
+  "backup": {
+    "enabled": true,
+    "schedule": "0 2 * * *",
+    "retention_days": 30,
+    "s3_bucket": "${BACKUP_BUCKET}",
+    "encryption": true
+  },
+  "alerts": {
+    "enabled": true,
+    "channels": ["email", "slack"],
+    "email": "${ALERT_EMAIL}",
+    "slack_webhook": "${SLACK_WEBHOOK}",
+    "thresholds": {
+      "error_rate": 5,
+      "response_time_ms": 1000,
+      "cpu_percent": 85,
+      "memory_percent": 85
+    }
+  }
+}

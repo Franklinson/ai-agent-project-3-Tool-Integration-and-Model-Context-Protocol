@@ -1,0 +1,89 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Tests
+**/tests/
+**/*_test.py
+**/test_*.py
+pytest.ini
+.pytest_cache/
+
+# Logs
+*.log
+logs/
+day_44/logs/
+
+# Data
+data/
+day_44/data/
+*.db
+*.sqlite
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Deployment
+.dockerignore
+Dockerfile
+docker-compose.yml
+*.yaml
+*.yml
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Day directories (keep only necessary ones)
+day_32/
+day_34/
+day_35/
+day_36/
+day_37/
+day_38/
+day_39/
+day_40/
+day_41/
+day_42/
+
+# Keep only essential directories
+# day_31/ - tool definitions
+# day_33/ - error handling
+# day_43/ - mcp server
+# day_44/config/ - configuration
